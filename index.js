@@ -3,6 +3,7 @@ import "express-async-errors";
 import dotenv from 'dotenv';
 import cors from "cors";
 import {database} from "./config/mongoDb.js";
+import {handleError} from "./utils/error.js";
 
 dotenv.config();
 
