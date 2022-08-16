@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 
 const orderSchema = mongoose.Schema({
         user: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             required: true,
             ref: "User",
         },
@@ -13,7 +13,7 @@ const orderSchema = mongoose.Schema({
                 quantity: {type: Number, required: true},
                 image: {type: String, required: true},
                 product: {
-                    type: mongoose.Schema.Types.ObjectId,
+                    type: Schema.Types.ObjectId,
                     required: true,
                     ref: "Product"
                 }
