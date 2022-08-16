@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {Review} from "./Review.js";
+import {ReviewSchema} from "./Review.js";
 
 
 const productSchema = mongoose.Schema({
@@ -22,7 +22,7 @@ const productSchema = mongoose.Schema({
             type: String,
             required: true,
         },
-        reviews: [Review],
+        reviews: {type: [ReviewSchema.Schema]},
         rating: {
             type: Number,
             required: true,
