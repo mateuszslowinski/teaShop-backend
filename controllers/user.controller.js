@@ -1,6 +1,7 @@
 import {ValidationError} from "../utils/error.js";
 import {User} from "../Models/User.js";
 import bcrypt from 'bcryptjs';
+import {generateToken} from "../utils/token.js";
 
 export const userLogin = async (req, res) => {
     const {email, password} = req.body;
@@ -21,7 +22,7 @@ export const userLogin = async (req, res) => {
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
-            token: null,
+            token: generateToken(user._id),
             createdAt: user.createdAt,
         })
     }
