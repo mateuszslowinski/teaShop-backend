@@ -3,6 +3,8 @@ import "express-async-errors";
 import dotenv from 'dotenv';
 import cors from "cors";
 import {database} from "./config/mongoDb.js";
+import {handleError} from "./utils/error.js";
+import {productRoute} from "./routes/product.route.js";
 
 dotenv.config();
 
@@ -12,13 +14,13 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN,
 }));
 
-app.use(express.json())
+app.use(express.json());
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.send('App is working')
-})
+});
 
-
+app.use('/api/products', productRoute);
 
 app.use(handleError);
 
