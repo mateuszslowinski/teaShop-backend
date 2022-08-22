@@ -18,7 +18,7 @@ export const findOneProduct = async (req, res) => {
     if (product) {
         res.json(product)
     } else {
-        throw new NotFoundError('Product not found')
+        throw new NotFoundError('Nie znaleziono tego produktu')
     }
 
 }

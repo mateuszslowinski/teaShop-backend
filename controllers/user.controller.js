@@ -9,19 +9,19 @@ export const userRegister = async (req, res) => {
     const {username, email, password} = req.body;
 
     if (!validateEmail(email)) {
-        throw new ValidationError('Invalid email');
+        throw new ValidationError('Nieprawidłowy email');
     }
 
     if (!username || username.length > 20) {
-        throw new ValidationError('Username can not be empty or longer then 20 signs')
+        throw new ValidationError('Nazwa użytkownika może być pusta, ani większa niż 20 znaków');
     }
     if (!password || password.length > 15) {
-        throw new ValidationError('Password can not be empty or longer then 15 signs')
+        throw new ValidationError('Hasło nie może być puste, ani większę niż 15 znaków');
     }
 
     const checkEmail = await User.findOne({email});
     if (checkEmail) {
-        throw new ValidationError('This email has been taken')
+        throw new ValidationError('Ten emial jest zajęty');
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -49,12 +49,12 @@ export const userLogin = async (req, res) => {
     const user = await User.findOne({email});
 
     if (!user) {
-        throw new ValidationError('This email is not found');
+        throw new ValidationError('Email ten nie istnieje');
     }
 
     const isCorrectPassword = await bcrypt.compare(password, user.password);
     if (!isCorrectPassword) {
-        throw new ValidationError('Password is incorrect');
+        throw new ValidationError('Hasło jest nie prawidłowe');
     }
 
     if (user && isCorrectPassword) {
@@ -81,6 +81,6 @@ export const getUserProfile = async (req, res) => {
             createdAt: user.createdAt,
         });
     } else {
-        throw new NotFoundError('User not found');
+        throw new NotFoundError('Użytkownik nie znaleziony');
     }
 }

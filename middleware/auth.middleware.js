@@ -19,6 +19,6 @@ export const protect = async (req, res, next) => {
         }
     }
     if (!token) {
-        throw new ValidationError('Invalid Authentication');
+        throw new ValidationError('Nieprawidlowe uwierzytelnienie');
     }
 }
