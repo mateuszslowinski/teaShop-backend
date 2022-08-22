@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import {ReviewSchema} from "./Review.js";
 
 
-const productSchema = mongoose.Schema({
+const productSchema = new mongoose.Schema({
         name: {
             type: String,
             trim: true,
@@ -22,7 +22,7 @@ const productSchema = mongoose.Schema({
             type: String,
             required: true,
         },
-        reviews: {type: [ReviewSchema.Schema]},
+        reviews: {type: [ReviewSchema]},
         rating: {
             type: Number,
             required: true,

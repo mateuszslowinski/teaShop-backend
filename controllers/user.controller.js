@@ -2,6 +2,47 @@ import bcrypt from 'bcryptjs';
 import {generateToken} from "../utils/token.js";
 import {User} from "../Models/User.js";
 import {NotFoundError, ValidationError} from "../utils/error.js";
+import {validateEmail} from "../utils/validation.js";
+
+
+export const userRegister = async (req, res) => {
+    const {username, email, password} = req.body;
+
+    if (!validateEmail(email)) {
+        throw new ValidationError('Invalid email');
+    }
+
+    if (!username || username.length > 20) {
+        throw new ValidationError('Username can not be empty or longer then 20 signs')
+    }
+    if (!password || password.length > 15) {
+        throw new ValidationError('Password can not be empty or longer then 15 signs')
+    }
+
+    const checkEmail = await User.findOne({email});
+    if (checkEmail) {
+        throw new ValidationError('This email has been taken')
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(password, salt)
+
+    const user = await new User({
+        username,
+        email,
+        password: encryptedPassword,
+        isAdmin: email === process.env.ADMIN_EMAIL,
+    }).save();
+
+    res.status(201).json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        token: generateToken(user._id)
+    });
+
+}
+
 
 export const userLogin = async (req, res) => {
     const {email, password} = req.body;
@@ -19,7 +60,7 @@ export const userLogin = async (req, res) => {
     if (user && isCorrectPassword) {
         res.json({
             _id: user._id,
-            name: user.name,
+            username: user.username,
             email: user.email,
             isAdmin: user.isAdmin,
             token: generateToken(user._id),
