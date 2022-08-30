@@ -6,6 +6,7 @@ import {database} from "./config/mongoDb.js";
 import {handleError} from "./utils/error.js";
 import {productRoute} from "./routes/product.route.js";
 import {userRoute} from "./routes/user.route.js";
+import {reviewRoute} from "./routes/review.route.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRoute);
 app.use('/api/users', userRoute);
+app.use('/api/review',reviewRoute)
 
 app.use(handleError);
 
