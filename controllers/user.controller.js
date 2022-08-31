@@ -4,6 +4,7 @@ import {User} from "../Models/User.js";
 import {NotFoundError, ValidationError} from "../utils/error.js";
 import {validateEmail} from "../utils/validation.js";
 
+
 //REGISTER
 export const userRegister = async (req, res) => {
     const {username, email, password} = req.body;
@@ -106,6 +107,23 @@ export const updatedProfile = async (req, res) => {
     } else {
         throw new NotFoundError('Użytkownik nie znaleziony');
     }
+}
 
-
+// GETS ALL USERS LIST
+export const findAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({})
+        res.json(users)
+    } catch (e) {
+        throw new NotFoundError(e.message)
+    }
+}
+// REMOVE ONE USER
+export const removeUser = async (req, res) => {
+    try {
+        await User.findByIdAndRemove(req.params.id)
+        res.status(201).json('Pomyślnie usunięto uzytkownika')
+    } catch (error) {
+        throw new ValidationError(error.message);
+    }
 }

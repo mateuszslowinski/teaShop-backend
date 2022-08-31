@@ -1,12 +1,21 @@
 import express from "express";
-import {getUserProfile, updatedProfile, userLogin, userRegister} from "../controllers/user.controller.js";
+import {
+    findAllUsers,
+    getUserProfile,
+    removeUser,
+    updatedProfile,
+    userLogin,
+    userRegister
+} from "../controllers/user.controller.js";
 import {protect} from "../middleware/auth.middleware.js";
 
 export const userRoute = express.Router();
 
 
 userRoute
-    .post('/', userRegister)
+    .get('/', protect, findAllUsers)
+    .delete('/:id', protect, removeUser)
+    .post('/register', userRegister)
     .post('/login', userLogin)
     .get('/profile', protect, getUserProfile)
-    .put('/profile/:id',protect, updatedProfile)
+    .put('/profile/:id', protect, updatedProfile)
