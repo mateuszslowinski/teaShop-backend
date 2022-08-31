@@ -1,8 +1,18 @@
 import express from "express";
-import {findAllProduct, findOneProduct} from "../controllers/product.controller.js";
+import {
+    addProduct,
+    editProduct,
+    findAllProduct,
+    findOneProduct,
+    removeProduct
+} from "../controllers/product.controller.js";
+import {protect} from "../middleware/auth.middleware.js";
 
 export const productRoute = express.Router()
 
 productRoute
     .get('/', findAllProduct)
     .get('/:id', findOneProduct)
+    .post('/', protect, addProduct)
+    .put('/:id', protect, editProduct)
+    .delete('/:id', protect, removeProduct)
