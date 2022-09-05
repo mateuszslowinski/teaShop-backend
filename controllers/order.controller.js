@@ -1,5 +1,6 @@
 import {Order} from "../Models/Order.js";
 import {NotFoundError, ValidationError} from "../utils/error.js";
+import {Product} from "../Models/Product.js";
 
 //CREATE ORDER
 export const createOrder = async (req, res) => {
@@ -19,6 +20,12 @@ export const createOrder = async (req, res) => {
         throw new ValidationError('Brak ceny w zamówieniu')
     }
     try {
+        cartItems.map(async (item) => {
+            const product = await Product.findById(item._id);
+            product.countInStock -= item.quantity;
+            await product.save()
+        })
+
         const order = new Order({
             user,
             orderItems: cartItems,
