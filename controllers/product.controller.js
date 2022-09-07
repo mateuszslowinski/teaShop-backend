@@ -5,7 +5,7 @@ import {validateLength, validateMaxNumber} from "../utils/validation.js";
 export const findAllProduct = async (req, res) => {
     try {
         const products = await Product.find({})
-        res.json(products)
+        res.status(200).json(products)
     } catch (e) {
         throw new NotFoundError(e.message)
     }
@@ -14,9 +14,19 @@ export const findAllProduct = async (req, res) => {
 export const findOneProduct = async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
-        res.json(product)
+        res.status(200).json(product);
     } else {
-        throw new NotFoundError('Nie znaleziono tego produktu')
+        throw new NotFoundError('Nie znaleziono tego produktu');
+    }
+}
+
+export const findProductByCategory = async (req, res) => {
+    const products = await Product.find({category: req.params.name});
+
+    if (products) {
+        res.status(200).json(products);
+    } else {
+        throw new NotFoundError('Nie znalezionio takiej kategori');
     }
 }
 
@@ -29,10 +39,9 @@ export const addProduct = async (req, res) => {
     validateMaxNumber(price, 0, 'Cena nie może byc mniejsza niż zero');
     validateMaxNumber(countInStock, 0, 'Ilość produktów nie może byc mniejsza niż zero');
 
-
     const product = await new Product({
-        name: productName,
-        category,
+        name: productName.toLowerCase(),
+        category: category.toLowerCase(),
         image: name,
         description,
         price,
@@ -67,7 +76,7 @@ export const editProduct = async (req, res) => {
     try {
         await Product.findByIdAndUpdate(req.params.id, {
             name: productName,
-            image:name,
+            image: name,
             category,
             description,
             price,

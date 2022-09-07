@@ -3,7 +3,7 @@ import {
     addProduct,
     editProduct,
     findAllProduct,
-    findOneProduct,
+    findOneProduct, findProductByCategory,
     removeProduct
 } from "../controllers/product.controller.js";
 import {protect} from "../middleware/auth.middleware.js";
@@ -16,3 +16,4 @@ productRoute
     .post('/', protect, addProduct)
     .put('/:id', protect, editProduct)
     .delete('/:id', protect, removeProduct)
+    .get('/category/:name',findProductByCategory)
