@@ -1,8 +1,13 @@
 import {ValidationError} from "../utils/error.js";
 import {Email} from "../utils/mailer.js";
+import {validateEmail} from "../utils/validation.js";
 
 export const sendNewsletter = async (req, res) => {
     const {email} = req.body;
+
+    if (!validateEmail(email)) {
+        throw new ValidationError('Nieprawidłowy email');
+    }
 
     const mailOptions = {
         from: process.env.MAIL_USER,
