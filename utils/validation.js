@@ -9,13 +9,13 @@ export const validateEmail = (email) => {
 };
 
 export const validateLength = (key, maxValue, descriptionOfError) => {
-    if (!key && key.length > maxValue) {
+    if (!key || key.length > maxValue) {
         throw new ValidationError(descriptionOfError);
     }
 }
 
 export const validateMaxNumber = (key, value, descriptionOfError) => {
-    if (!key && key < value) {
+    if (!key || key < value) {
         throw new ValidationError(descriptionOfError);
     }
 }
